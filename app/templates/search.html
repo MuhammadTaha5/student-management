@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Student</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#6a11cb,#2575fc);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:12px;
+width:350px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:15px 0;
+border:none;
+border-bottom:2px solid #ccc;
+outline:none;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:25px;
+background:linear-gradient(90deg,#ff7e5f,#00c6ff);
+color:white;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+text-align:left;
+display:none;
+}
+
+.tag{
+display:inline-block;
+background:#2575fc;
+color:white;
+padding:5px 10px;
+border-radius:20px;
+margin:3px;
+font-size:12px;
+}
+
+.nav{
+margin-top:15px;
+font-size:14px;
+cursor:pointer;
+color:#2575fc;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Search Student</h2>
+
+<input type="text" id="reg" placeholder="2022-CS-101">
+
+<button onclick="search()">Search</button>
+
+<div class="result" id="result"></div>
+
+<div class="nav" onclick="goInsert()">➜ Insert New Student</div>
+
+</div>
+
+<script>
+
+async function search(){
+
+const reg = document.getElementById("reg").value
+
+const res = await fetch(`/student/${reg}`)
+const data = await res.json()
+
+if(data.message){
+alert("Not Found")
+return
+}
+
+const subjects = data.subjects.split(",")
+
+let tags = ""
+subjects.forEach(s=>{
+tags += `<span class="tag">${s}</span>`
+})
+
+document.getElementById("result").style.display="block"
+document.getElementById("result").innerHTML = `
+<b>${data.first_name} ${data.last_name}</b><br>
+${data.registration_number}<br><br>
+${tags}<br><br>
+<b>CGPA:</b> ${data.cgpa}
+`
+
+}
+
+function goInsert(){
+window.location.href = "/insert.html"
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert Student</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#00c6ff,#ff7e5f);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:12px;
+width:350px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border:none;
+border-bottom:2px solid #ccc;
+outline:none;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:25px;
+background:linear-gradient(90deg,#6a11cb,#2575fc);
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+.nav{
+margin-top:15px;
+text-align:center;
+cursor:pointer;
+color:#2575fc;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Add Student</h2>
+
+<input type="text" id="fname" placeholder="First Name">
+<input type="text" id="lname" placeholder="Last Name">
+<input type="text" id="reg" placeholder="Registration Number">
+<input type="text" id="subjects" placeholder="OOP,DB,AI">
+<input type="number" id="cgpa" placeholder="CGPA" step="0.01">
+
+<button onclick="insert()">Insert Data</button>
+
+<div class="nav" onclick="goSearch()">➜ Search Student</div>
+
+</div>
+
+<script>
+
+async function insert(){
+
+const data = {
+first_name: document.getElementById("fname").value,
+last_name: document.getElementById("lname").value,
+registration_number: document.getElementById("reg").value,
+subjects: document.getElementById("subjects").value,
+cgpa: parseFloat(document.getElementById("cgpa").value)
+}
+
+const res = await fetch("/student",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data)
+})
+
+const result = await res.json()
+
+alert(result.message)
+
+}
+
+function goSearch(){
+window.location.href = "/search.html"
+}
+
+</script>
+
+</body>
+</html>

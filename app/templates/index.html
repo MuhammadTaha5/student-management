@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Portal</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 1100px;
+            height: 620px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* LEFT + RIGHT */
+
+        .section {
+            width: 50%;
+            padding: 40px;
+            transition: 0.6s;
+        }
+
+        /* LEFT FORM */
+
+        .left {
+            background: #f7f9fc;
+        }
+
+        .right {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* HEADINGS */
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        /* FORM */
+
+        .group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        /* BUTTON */
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #4facfe;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #2f8cff;
+        }
+
+        /* SEARCH UI */
+
+        .search-box {
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        /* PROFILE CARD */
+
+        .card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f9fbff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: none;
+            text-align: left;
+        }
+
+        .card h3 {
+            margin: 0;
+        }
+
+        .subject {
+            display: inline-block;
+            background: #4facfe;
+            color: white;
+            padding: 6px 12px;
+            margin: 4px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        /* CGPA BADGE */
+
+        .cgpa {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #4facfe;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .sub {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        /* HIDE */
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT SIDE -->
+
+        <div class="section left" id="leftSection">
+
+            <h2>Add Student Record</h2>
+
+            <div id="insertForm">
+
+                <div class="group">
+                    <label>First Name</label>
+                    <input type="text" id="fname">
+                </div>
+
+                <div class="group">
+                    <label>Last Name</label>
+                    <input type="text" id="lname">
+                </div>
+
+                <div class="group">
+                    <label>Registration Number</label>
+                    <input type="text" id="regno" placeholder="2022-CS-101">
+                </div>
+
+                <div class="group">
+                    <label>Subjects</label>
+                    <input type="text" id="subjects" placeholder="OOP,Database,Networks">
+                </div>
+
+                <div class="group">
+                    <label>CGPA</label>
+                    <input type="number" id="cgpa" min="0" max="4">
+                </div>
+
+                <button>Add Student</button>
+
+            </div>
+
+            <!-- SEARCH UI -->
+
+            <div id="searchUI" class="hidden">
+
+                <h2>Search Student</h2>
+
+                <div class="search-box">
+
+                    <input type="text" id="searchReg" placeholder="Enter Registration Number">
+
+                    <button onclick="searchStudent()">Search</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="section right">
+
+            <div id="introSection">
+
+                <div class="message">
+                    Student Database Portal
+                </div>
+
+                <div class="sub">
+                    Insert student records or search existing results.
+                </div>
+
+                <button onclick="showSearch()">Search Student Record</button>
+
+            </div>
+
+            <!-- PROFILE CARD -->
+
+            <div class="card" id="profileCard">
+
+                <h3 id="name"></h3>
+                <div id="reg"></div>
+
+                <div id="subjectsList"></div>
+
+                <div class="cgpa" id="cgpaDisplay"></div>
+
+                <button onclick="showInsert()">Insert New Record</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        /* SWITCH TO SEARCH MODE */
+
+        function showSearch() {
+
+            document.getElementById("insertForm").classList.add("hidden")
+
+            document.getElementById("searchUI").classList.remove("hidden")
+
+        }
+
+        /* SWITCH BACK TO INSERT MODE */
+
+        function showInsert() {
+
+            document.getElementById("insertForm").classList.remove("hidden")
+
+            document.getElementById("searchUI").classList.add("hidden")
+
+            document.getElementById("profileCard").style.display = "none"
+
+        }
+
+        /* SEARCH FUNCTION */
+
+        async function searchStudent() {
+
+            const reg = document.getElementById("searchReg").value
+
+            const res = await fetch(`/student/${reg}`)
+            const data = await res.json()
+
+            if (data.message) {
+                alert("Student not found")
+                return
+            }
+
+            document.getElementById("introSection").style.display = "none"
+
+            document.getElementById("profileCard").style.display = "block"
+
+            document.getElementById("name").innerText =
+                data.first_name + " " + data.last_name
+
+            document.getElementById("reg").innerText =
+                data.registration_number
+
+            document.getElementById("cgpaDisplay").innerText =
+                "CGPA : " + data.cgpa
+
+            const subjects = data.subjects.split(",")
+
+            const container = document.getElementById("subjectsList")
+
+            container.innerHTML = ""
+
+            subjects.forEach(sub => {
+
+                const tag = document.createElement("span")
+
+                tag.className = "subject"
+
+                tag.innerText = sub
+
+                container.appendChild(tag)
+
+            })
+
+        }
+
+    </script>
+
+</body>
+
+</html>
